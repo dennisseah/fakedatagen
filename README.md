@@ -25,8 +25,10 @@ Open a new terminal, and install dependencies.
 
 ## Test run
 
+To generate fake data in pandas dataframe with random seed.
 ```python main_df.py```
 
 or
 
+To generate fake data for statement (5 times).
 ```python main_template.py```

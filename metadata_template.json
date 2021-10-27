@@ -1,5 +1,5 @@
 {
     "type": "str_template",
     "string": "I am {{ faker.first_name() }} {{ faker.last_name() }}. I live in {{ faker.address() }}. I am born in {{ faker.date_of_birth() }}. My email address is {{ faker.ascii_free_email() }} and phone number is {{ faker.phone_number() }}. I work as a {{ faker.job() }} in {{ faker.company() }}. My employee id is {{ faker.bothify('????-########') }}",
-    "count": 1
+    "count": 5
 }
