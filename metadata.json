@@ -1,0 +1,45 @@
+{
+    "columns": [
+        { "name": "fname", "func": "faker.first_name()" },
+        { "name": "lname", "func": "faker.last_name()" },
+        { "name": "home-address", "func": "faker.address()" },
+        { "name": "date_of_birth", "func": "faker.date_of_birth()" },
+        { "name": "email-address", "func": "faker.ascii_free_email()" },
+        { "name": "phone-number", "func": "faker.phone_number()" },
+        { "name": "company", "func": "faker.company()" },
+        { "name": "job", "func": "faker.job()" },
+        {
+            "name": "enrolL_date",
+            "func": "faker.date_between(start_date='-10y')"
+        },
+        {
+            "name": "employee_id",
+            "func": "faker.bothify('????-########')"
+        },
+        {
+            "name": "locale"
+        }
+    ],
+    "rows": [
+        {
+            "count": 100,
+            "locale": "en_US",
+            "seed": 1234,
+            "columns": {
+                "locale": {
+                    "text": "en-US"
+                }
+            }
+        },
+        {
+            "count": 20,
+            "locale": "ja_JP",
+            "seed": 1234,
+            "columns": {
+                "locale": {
+                    "text": "ja-JP"
+                }
+            }
+        }
+    ]
+}

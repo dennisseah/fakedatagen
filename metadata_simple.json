@@ -1,0 +1,14 @@
+{
+    "columns": [
+        { "name": "language", "text": "en_US" },
+        { "name": "customer_name", "func": "faker.company()" },
+        { "name": "transcript", "func": "' '.join(faker.paragraphs())" }
+    ],
+    "rows": [
+        {
+            "count": 5,
+            "locale": "en_US",
+            "seed": 1234
+        }
+    ]
+}
