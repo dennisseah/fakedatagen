@@ -12,7 +12,7 @@ from tests.metadata_builder import MetaDataBuilder
 def _validate_result(result):
     return (
         result
-        == "I am Kimberly Miller. I live in 2513 Joseph Ports Apt. 463\nJonestown, SD 66069. I am born in 1934-03-09. My email address is monicarivera@gmail.com and phone number is +1-975-277-0031. I work as a Exercise physiologist in Pope-Hill. My employee id is JYkn-85027169"
+        == "I am Kimberly Miller. I live in 2513 Joseph Ports Apt. 463\nJonestown, SD 66069. I am born in 1934-03-09. My email address is monicarivera@gmail.com and phone number is +1-975-277-0031. I work as a Exercise physiologist in Pope-Hill. My employee id is JYkn-85027169"  # noqa E501
     )
 
 
