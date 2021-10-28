@@ -2,6 +2,8 @@
 import re
 from faker import Faker
 
+from lib.errors import InvalidMetadataJson
+
 RE_TOKEN = re.compile(r"\{\{\s*(\S+?)\s*\}\}")
 
 
@@ -21,7 +23,8 @@ class StrTemplate:
         if self.count < 0:
             self.count = 0
 
-        self.locale = metadata.get("locale", "en_US")
+        metadata.setdefault("locale", "en_US")
+        self.locale = metadata.get("locale")
         self.seed = metadata.get("seed")
 
     def __validate(self, metadata: dict, name: str):
@@ -30,12 +33,12 @@ class StrTemplate:
             or not isinstance(metadata[name], str)
             or len(metadata[name].strip()) == 0
         ):
-            raise AttributeError(f"{name} was missing in metadata")
+            raise InvalidMetadataJson(f"{name} was missing in metadata")
 
     def __build(self, faker: Faker):
         result = self.template
 
-        while m := RE_TOKEN.search(result):
+        while m := RE_TOKEN.search(result):  # noqa E701 support walrus
             span = m.span()
             result = result[0 : span[0]] + str(eval(m.groups()[0])) + result[span[1] :]
 

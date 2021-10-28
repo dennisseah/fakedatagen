@@ -2,6 +2,8 @@
 import pandas as pd
 from faker import Faker
 
+from lib.errors import InvalidMetadataJson
+
 
 class Dataframe:
     """Pandas dataframe builder."""
@@ -24,7 +26,7 @@ class Dataframe:
             or not isinstance(metadata[name], list)
             or len(metadata[name]) == 0
         ):
-            raise AttributeError(f"{name} was missing in metadata")
+            raise InvalidMetadataJson(f"{name} was missing in metadata")
 
     def __build_rows(
         self,
@@ -82,13 +84,19 @@ class Dataframe:
         Returns:
             pandas.dataframe: Pandas dataframe containing the data.
         """
+        if not all(c.get("name") for c in self.columns):
+            raise InvalidMetadataJson("Column name is required.")
+
+        if not all(c.get("func") or c.get("text") for c in self.columns):
+            raise InvalidMetadataJson("Column func or text is required.")
+
         column_names = [x["name"] for x in self.columns]
         df = pd.DataFrame(columns=column_names)
 
         for row in self.rows:
             df = self.__build_rows(
                 df,
-                row["count"],
+                row.get("count", 10),
                 row.get("columns"),
                 row.get("locale"),
                 row.get("seed"),
