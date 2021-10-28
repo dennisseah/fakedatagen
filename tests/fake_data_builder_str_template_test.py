@@ -10,121 +10,109 @@ from tests.metadata_builder import MetaDataBuilder
 
 
 def _validate_result(result):
-    return (
+    assert (
         result
-        == "I am Kimberly Miller. I live in 2513 Joseph Ports Apt. 463\nJonestown, SD 66069. I am born in 1934-03-09. My email address is monicarivera@gmail.com and phone number is +1-975-277-0031. I work as a Exercise physiologist in Pope-Hill. My employee id is JYkn-85027169"  # noqa E501
+        == "I am Kimberly Miller. I live in 2513 Joseph Ports Apt. 463\nJonestown, SD 66069. I am born in 1934-03-10. My email address is monicarivera@gmail.com and phone number is +1-975-277-0031. I work as a Exercise physiologist in Pope-Hill. My employee id is JYkn-85027169"  # noqa E501
     )
 
 
-def test_sanity(tmp_path):
+def _write_metadata_file(tmp, count: int = 1, drop: str = None):
+    metadata = MetaDataBuilder.template_simple(count=count)
+
+    if drop:
+        assert metadata.get(drop) is not None
+        metadata.pop(drop)
+        assert metadata.get(drop) is None
+
+    p = tmp / "simple_json.json"
+    p.write_text(json.dumps(metadata))
+    return p
+
+
+def deco(count=1, drop=None):
+    """Test decorator.
+
+    Args:
+        count (int, optional): count of generate items. Defaults to 1.
+        drop ([type], optional): key of metadata to drop. Defaults to None.
+    """
+
+    def wrap(f):
+        def wrapped_f(tmp_path):
+            try:
+                p = _write_metadata_file(tmp_path, count=count, drop=drop)
+                f(p)
+            finally:
+                p.unlink()
+
+        return wrapped_f
+
+    return wrap
+
+
+@deco()
+def test_sanity(fp):
     """Sanity Test."""
-    try:
-        metadata = MetaDataBuilder.template_simple()
-        p = tmp_path / "simple_str_template.json"
-        p.write_text(json.dumps(metadata))
-
-        bldr = FakeDataBuilder(metadata_filename=p.absolute())
-        result = bldr.build()
-        _validate_result(result)
-    finally:
-        p.unlink()
+    bldr = FakeDataBuilder(metadata_filename=fp.absolute())
+    _validate_result(bldr.build())
 
 
-def test_sanity_count_10(tmp_path):
+@deco(count=10)
+def test_sanity_count_10(fp):
     """Sanity Test with count = 10.
 
     Args:
         tmp_path (Path): Temporary Path.
     """
-    try:
-        metadata = MetaDataBuilder.template_simple(count=10)
-        p = tmp_path / "simple_str_template.json"
-        p.write_text(json.dumps(metadata))
-
-        bldr = FakeDataBuilder(metadata_filename=p.absolute())
-        result = bldr.build()
-        assert isinstance(result, list)
-        assert len(result) == 10
-    finally:
-        p.unlink()
+    bldr = FakeDataBuilder(metadata_filename=fp.absolute())
+    result = bldr.build()
+    assert isinstance(result, list)
+    assert len(result) == 10
 
 
-def test_sanity_count_negative(tmp_path):
+@deco(count=-1)
+def test_sanity_count_negative(fp):
     """Sanity Test with count = -1.
 
     Args:
         tmp_path (Path): Temporary Path.
     """
-    try:
-        metadata = MetaDataBuilder.template_simple(count=-1)
-        p = tmp_path / "simple_str_template.json"
-        p.write_text(json.dumps(metadata))
-
-        bldr = FakeDataBuilder(metadata_filename=p.absolute())
-        result = bldr.build()
-        assert result is None
-    finally:
-        p.unlink()
+    bldr = FakeDataBuilder(metadata_filename=fp.absolute())
+    result = bldr.build()
+    assert result is None
 
 
-def test_without_template_should_raise_except(tmp_path):
+@deco(drop="string")
+def test_without_template_should_raise_except(fp):
     """Test without string template.
 
     Args:
         tmp_path (Path): Temporary Path.
     """
-    try:
-        metadata = MetaDataBuilder.template_simple()
-        metadata.pop("string")
-
-        p = tmp_path / "simple_str_template.json"
-        p.write_text(json.dumps(metadata))
-
-        with pytest.raises(InvalidMetadataJson):
-            FakeDataBuilder(metadata_filename=p.absolute())
-    finally:
-        p.unlink()
+    with pytest.raises(InvalidMetadataJson):
+        FakeDataBuilder(metadata_filename=fp.absolute())
 
 
-def test_without_seed(tmp_path):
+@deco(drop="seed")
+def test_without_seed(fp):
     """Test without random seed.
 
     Args:
         tmp_path (Path): Temporary Path.
     """
-    try:
-        metadata = MetaDataBuilder.template_simple()
-        metadata.pop("seed")
-        assert metadata.get("seed") is None
-
-        p = tmp_path / "simple_str_template.json"
-        p.write_text(json.dumps(metadata))
-
-        bldr = FakeDataBuilder(metadata_filename=p.absolute())
-        assert bldr.metadata.get("seed") is None
-        result = bldr.build()
-        assert isinstance(result, str)
-    finally:
-        p.unlink()
+    bldr = FakeDataBuilder(metadata_filename=fp.absolute())
+    assert bldr.metadata.get("seed") is None
+    assert isinstance(bldr.build(), str)
 
 
-def test_without_locale_should_default_to_en_us(tmp_path):
+@deco(drop="locale")
+def test_without_locale_should_default_to_en_us(fp):
     """Test without locale. Builder will default it to en_US.
 
     Args:
         tmp_path (Path): Temporary Path.
     """
-    try:
-        metadata = MetaDataBuilder.template_simple()
-        metadata.pop("locale")
-        assert metadata.get("locale") is None
-
-        p = tmp_path / "simple_str_template.json"
-        p.write_text(json.dumps(metadata))
-
-        bldr = FakeDataBuilder(metadata_filename=p.absolute())
-        assert bldr.metadata["locale"] == "en_US"
-        result = bldr.build()
-        assert isinstance(result, str)
-    finally:
-        p.unlink()
+    bldr = FakeDataBuilder(metadata_filename=fp.absolute())
+    assert bldr.metadata["locale"] == "en_US"
+    result = bldr.build()
+    assert isinstance(result, str)

@@ -1,0 +1,19 @@
+{
+    "type": "json",
+    "schema": {
+        "first_name": "{{ faker.first_name() }}",
+        "last_name": "{{ faker.last_name() }}",
+        "address": "{{ faker.address() }}",
+        "date_of_birth": "{{ faker.date_of_birth() }}",
+        "email_address": "{{ faker.ascii_free_email() }}",
+        "phones": [
+            { "type": "cell", "number": "{{ faker.phone_number() }}" },
+            { "type": "home", "number": "{{ faker.phone_number() }}" }
+        ],
+        "employer": {
+            "company": "{{ faker.company() }}",
+            "job": "{{ faker.job() }}"
+        }
+    },
+    "count": 1
+}

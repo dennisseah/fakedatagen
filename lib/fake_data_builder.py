@@ -3,11 +3,13 @@
 import json
 
 from lib.builders.dataframe import Dataframe
+from lib.builders.json import Json
 from lib.builders.str_template import StrTemplate
 from lib.errors import InvalidMetadataJson, InvalidProviderType
 
 PROVIDER_MAP = {
     "dataframe": Dataframe,
+    "json": Json,
     "str_template": StrTemplate,
 }
 

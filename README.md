@@ -36,6 +36,13 @@ or
 
 To generate fake data for statement (5 times).
 ```sh
+python main_json.py
+```
+
+or
+
+To generate fake data for statement (5 times).
+```sh
 python main_template.py
 ```
 
