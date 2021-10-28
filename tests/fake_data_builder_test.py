@@ -3,7 +3,7 @@ import json
 import pytest
 
 from lib.fake_data_builder import FakeDataBuilder
-from lib.errors import InvalidMetadataJson
+from lib.errors import InvalidMetadataJson, InvalidProviderType
 
 from tests.metadata_builder import MetaDataBuilder
 
@@ -66,7 +66,7 @@ def test_invalid_type_metadata_json_should_raise_exception(tmp_path):
     p.write_text(json.dumps(metadata))
 
     try:
-        with pytest.raises(InvalidMetadataJson):
+        with pytest.raises(InvalidProviderType):
             FakeDataBuilder(metadata_filename=p.absolute())
     finally:
         p.unlink()

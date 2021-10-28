@@ -4,7 +4,12 @@ import json
 
 from lib.builders.dataframe import Dataframe
 from lib.builders.str_template import StrTemplate
-from lib.errors import InvalidMetadataJson
+from lib.errors import InvalidMetadataJson, InvalidProviderType
+
+PROVIDER_MAP = {
+    "dataframe": Dataframe,
+    "str_template": StrTemplate,
+}
 
 
 class FakeDataBuilder:
@@ -27,13 +32,13 @@ class FakeDataBuilder:
 
     def _get_builder(self):
         """Return builder provider."""
-        if self.metadata["type"] == "dataframe":
-            return Dataframe(self.metadata)
+        provider_type = self.metadata["type"]
+        provider = PROVIDER_MAP.get(provider_type)
 
-        if self.metadata["type"] == "str_template":
-            return StrTemplate(self.metadata)
+        if not provider:
+            raise InvalidProviderType(f"unknown builder type, {provider_type}")
 
-        raise InvalidMetadataJson(f"unknown builder type, {self.metadata['type']}")
+        return provider(self.metadata)
 
     def build(self):
         """Build the data set."""
