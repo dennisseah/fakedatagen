@@ -3,6 +3,7 @@ import pandas as pd
 from faker import Faker
 
 from lib.errors import InvalidMetadataJson
+from lib.configuration import DEFAULT_LOCALE, MetadataKey
 
 
 class Dataframe:
@@ -37,7 +38,7 @@ class Dataframe:
         seed: int,
     ):
         if not locale:
-            locale = "en_US"
+            locale = DEFAULT_LOCALE
 
         faker = Faker(locale)
         Faker.seed(seed)
@@ -96,10 +97,10 @@ class Dataframe:
         for row in self.rows:
             df = self.__build_rows(
                 df,
-                row.get("count", 10),
+                row.get(MetadataKey.COUNT.value, 10),
                 row.get("columns"),
-                row.get("locale"),
-                row.get("seed"),
+                row.get(MetadataKey.LOCALE.value),
+                row.get(MetadataKey.SEED.value),
             )
 
         return df

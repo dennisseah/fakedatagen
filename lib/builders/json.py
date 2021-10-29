@@ -3,6 +3,7 @@ import copy
 import re
 from faker import Faker
 
+from lib.configuration import DEFAULT_LOCALE, MetadataKey
 from lib.errors import InvalidMetadataJson
 
 RE_TOKEN = re.compile(r"\{\{\s*(\S+?)\s*\}\}")
@@ -20,13 +21,13 @@ class Json:
         self.__validate(metadata, "schema")
         self.schema = metadata["schema"]
 
-        self.count = metadata.get("count", 10)
+        self.count = metadata.get(MetadataKey.COUNT.value, 10)
         if self.count < 0:
             self.count = 0
 
-        metadata.setdefault("locale", "en_US")
-        self.locale = metadata.get("locale")
-        self.seed = metadata.get("seed")
+        metadata.setdefault(MetadataKey.LOCALE.value, DEFAULT_LOCALE)
+        self.locale = metadata.get(MetadataKey.LOCALE.value)
+        self.seed = metadata.get(MetadataKey.SEED.value)
 
     def __validate(self, metadata: dict, name: str):
         if metadata.get(name) is None or not isinstance(metadata[name], dict):

@@ -1,12 +1,14 @@
-"""Fake Data Builder DataFrame Tests."""
+"""Fake Data Builder Json Tests."""
 import json
 
 import pytest
 
-from lib.fake_data_builder import FakeDataBuilder
+from lib.configuration import DEFAULT_LOCALE, MetadataKey
 from lib.errors import InvalidMetadataJson
+from lib.fake_data_builder import FakeDataBuilder
 
 from tests.metadata_builder import MetaDataBuilder
+from tests.commons import write_metadata_file
 
 
 def _validate_result(result):
@@ -14,19 +16,6 @@ def _validate_result(result):
         json.dumps(result)
         == """{"first_name": "Kimberly", "last_name": "Miller", "address": "2513 Joseph Ports Apt. 463\\nJonestown, SD 66069", "date_of_birth": "1934-03-10", "email_address": "monicarivera@gmail.com", "phones": [{"type": "cell", "number": "+1-975-277-0031"}, {"type": "home", "number": "001-364-850-2716x9823"}], "employer": {"company": "Garcia Inc", "job": "Engineer, maintenance (IT)"}}"""  # noqa E502
     )
-
-
-def _write_metadata_file(tmp, count=1, drop: str = None):
-    metadata = MetaDataBuilder.json_simple(count=count)
-
-    if drop:
-        assert metadata.get(drop) is not None
-        metadata.pop(drop)
-        assert metadata.get(drop) is None
-
-    p = tmp / "simple_json.json"
-    p.write_text(json.dumps(metadata))
-    return p
 
 
 def deco(count=1, drop=None):
@@ -40,7 +29,9 @@ def deco(count=1, drop=None):
     def wrap(f):
         def wrapped_f(tmp_path):
             try:
-                p = _write_metadata_file(tmp_path, count=count, drop=drop)
+                _, p = write_metadata_file(
+                    tmp_path, MetaDataBuilder.json_simple, count=count, drop=drop
+                )
                 f(p)
             finally:
                 p.unlink()
@@ -77,7 +68,7 @@ def test_sanity_where_seed_is_missing(fp):
 def test_sanity_where_locale_is_missing_should_default_to_en_us(fp):
     """Test where locale is missing in metadata."""
     bldr = FakeDataBuilder(metadata_filename=fp.absolute())
-    assert bldr.metadata.get("locale") == "en_US"
+    assert bldr.metadata.get(MetadataKey.LOCALE.value) == DEFAULT_LOCALE
     assert bldr.build() is not None
 
 

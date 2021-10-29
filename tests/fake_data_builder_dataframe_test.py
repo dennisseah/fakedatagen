@@ -4,48 +4,33 @@ import json
 import pytest
 
 from lib.fake_data_builder import FakeDataBuilder
+from lib.configuration import MetadataKey
 from lib.errors import InvalidMetadataJson
 
 from tests.metadata_builder import MetaDataBuilder
+from tests.commons import write_metadata_file
 
 
 def _validate_df(metadata, df):
     metadata_col_names = [c["name"] for c in metadata["columns"]]
     assert df.columns.values.tolist() == metadata_col_names
-    assert df.shape[0] == metadata["rows"][0].get("count", 10)
+    assert df.shape[0] == metadata["rows"][0].get(MetadataKey.COUNT.value, 10)
 
 
-def _write_metadata_file(tmp, drop: str = None):
-    metadata = MetaDataBuilder.dataframe_simple()
-
-    if drop:
-        tokens = [x for x in drop.split("/") if x]
-
-        current = metadata
-        for x in range(0, len(tokens) - 1):
-            idx = int(tokens[x]) if tokens[x].isdigit() else tokens[x]
-            current = current[idx]
-
-        assert current.get(tokens[-1]) is not None
-        current.pop(tokens[-1])
-        assert current.get(tokens[-1]) is None
-
-    p = tmp / "simple_df.json"
-    p.write_text(json.dumps(metadata))
-    return metadata, p
-
-
-def deco(drop=None):
+def deco(count=5, drop=None):
     """Test decorator.
 
     Args:
+        count (int, optional): count of generate items. Defaults to 5.
         drop ([type], optional): key of metadata to drop. Defaults to None.
     """
 
     def wrap(f):
         def wrapped_f(tmp_path):
             try:
-                md, p = _write_metadata_file(tmp_path, drop=drop)
+                md, p = write_metadata_file(
+                    tmp_path, MetaDataBuilder.dataframe_simple, count=count, drop=drop
+                )
                 f(md, p)
             finally:
                 p.unlink()
@@ -105,6 +90,19 @@ def test_missing_seed_should_be_ok(metadata, fp):
     bldr = FakeDataBuilder(metadata_filename=fp.absolute())
     df = bldr.build()
     _validate_df(metadata, df)
+
+
+@deco(count=-1)
+def test_negative_count(metadata, fp):
+    """Negative count in rows attribute in metadata.
+
+    Args:
+        metadata (dict): metadata
+        fp (Path): Path where metadata file resides.
+    """
+    bldr = FakeDataBuilder(metadata_filename=fp.absolute())
+    df = bldr.build()
+    assert df.shape[0] == 0
 
 
 @deco(drop="/rows/0/count")

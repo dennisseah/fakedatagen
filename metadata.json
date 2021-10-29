@@ -9,7 +9,7 @@
         { "name": "company", "func": "faker.company()" },
         { "name": "job", "func": "faker.job()" },
         {
-            "name": "enrolL_date",
+            "name": "enroll_date",
             "func": "faker.date_between(start_date='-10y')"
         },
         {
