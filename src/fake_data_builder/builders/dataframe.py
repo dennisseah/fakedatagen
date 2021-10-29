@@ -2,8 +2,8 @@
 import pandas as pd
 from faker import Faker
 
-from lib.errors import InvalidMetadataJson
-from lib.configuration import DEFAULT_LOCALE, MetadataKey
+from fake_data_builder.errors import InvalidMetadataJson
+from fake_data_builder.configuration import DEFAULT_LOCALE, MetadataKey
 
 
 class Dataframe:

@@ -20,6 +20,7 @@ we open a python source file.
 Open a new terminal, and install dependencies.
 
 ```sh
+pip install --upgrade pip
 pip install -r requirements-dev.txt
 ```
 
@@ -29,7 +30,7 @@ pip install -r requirements-dev.txt
 
 To generate fake data in pandas `dataframe` with a random seed.
 ```sh
-export PYTHONPATH=.
+export PYTHONPATH=src
 python samples/main_df.py
 ```
 
@@ -51,4 +52,10 @@ python samples/main_strtemplate.py
 
 ```sh
 pytest --cov=lib --cov-report term-missing tests/
+```
+
+## Package wheel
+
+```sh
+python -m build
 ```

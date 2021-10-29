@@ -3,8 +3,8 @@ import copy
 import re
 from faker import Faker
 
-from lib.configuration import DEFAULT_LOCALE, MetadataKey
-from lib.errors import InvalidMetadataJson
+from fake_data_builder.configuration import DEFAULT_LOCALE, MetadataKey
+from fake_data_builder.errors import InvalidMetadataJson
 
 RE_TOKEN = re.compile(r"\{\{\s*(\S+?)\s*\}\}")
 

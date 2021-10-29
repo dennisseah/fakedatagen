@@ -1,5 +1,5 @@
 """Test code."""
-from lib.fake_data_builder import FakeDataBuilder
+from fake_data_builder.fake_data_builder import FakeDataBuilder
 
 
 builder = FakeDataBuilder("./samples/data/metadata.json")

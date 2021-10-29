@@ -3,9 +3,9 @@ import json
 
 import pytest
 
-from lib.fake_data_builder import FakeDataBuilder
-from lib.configuration import MetadataKey
-from lib.errors import InvalidMetadataJson
+from fake_data_builder.fake_data_builder import FakeDataBuilder
+from fake_data_builder.configuration import MetadataKey
+from fake_data_builder.errors import InvalidMetadataJson
 
 from tests.metadata_builder import MetaDataBuilder
 from tests.commons import write_metadata_file

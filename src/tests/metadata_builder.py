@@ -1,6 +1,6 @@
 """MetaData Builder for tests."""
 
-from lib.configuration import DEFAULT_LOCALE
+from fake_data_builder.configuration import DEFAULT_LOCALE
 
 
 class MetaDataBuilder:

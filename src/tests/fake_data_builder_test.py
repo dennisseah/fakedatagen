@@ -2,8 +2,8 @@
 import json
 import pytest
 
-from lib.fake_data_builder import FakeDataBuilder
-from lib.errors import InvalidMetadataJson, InvalidProviderType
+from fake_data_builder.fake_data_builder import FakeDataBuilder
+from fake_data_builder.errors import InvalidMetadataJson, InvalidProviderType
 
 from tests.metadata_builder import MetaDataBuilder
 
