@@ -15,9 +15,6 @@
         {
             "name": "employee_id",
             "func": "faker.bothify('????-########')"
-        },
-        {
-            "name": "locale"
         }
     ],
     "rows": [

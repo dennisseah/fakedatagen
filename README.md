@@ -27,23 +27,24 @@ pip install -r requirements-dev.txt
 
 ## Test run
 
-To generate fake data in pandas dataframe with random seed.
+To generate fake data in pandas `dataframe` with a random seed.
 ```sh
-python main_df.py
+export PYTHONPATH=.
+python samples/main_df.py
 ```
 
 or
 
 To generate fake data for statement (5 times).
 ```sh
-python main_json.py
+python samples/main_json.py
 ```
 
 or
 
 To generate fake data for statement (5 times).
 ```sh
-python main_template.py
+python samples/main_strtemplate.py
 ```
 
 ## Test unit tests
