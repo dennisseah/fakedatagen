@@ -7,7 +7,7 @@ class MetaDataBuilder:
     """MetaData Builder."""
 
     @staticmethod
-    def dataframe_simple(count=5):
+    def dataframe_simple(count=1):
         """Return a simple dataframe metadata."""
         return {
             "columns": [
@@ -27,7 +27,6 @@ class MetaDataBuilder:
                 "first_name": "{{ faker.first_name() }}",
                 "last_name": "{{ faker.last_name() }}",
                 "address": "{{ faker.address() }}",
-                "date_of_birth": "{{ faker.date_of_birth() }}",
                 "email_address": "{{ faker.ascii_free_email() }}",
                 "phones": [
                     {"type": "cell", "number": "{{ faker.phone_number() }}"},
@@ -45,7 +44,7 @@ class MetaDataBuilder:
         """Return a simple string template metadata."""
         return {
             "type": "str_template",
-            "string": "I am {{ faker.first_name() }} {{ faker.last_name() }}. I live in {{ faker.address() }}. I am born in {{ faker.date_of_birth() }}. My email address is {{ faker.ascii_free_email() }} and phone number is {{ faker.phone_number() }}. I work as a {{ faker.job() }} in {{ faker.company() }}. My employee id is {{ faker.bothify('????-########') }}",  # noqa E502
+            "string": "I am {{ faker.first_name() }} {{ faker.last_name() }}. I live in {{ faker.address() }}. My email address is {{ faker.ascii_free_email() }} and phone number is {{ faker.phone_number() }}. I work as a {{ faker.job() }} in {{ faker.company() }}. My employee id is {{ faker.bothify('????-########') }}",  # noqa E502
             "count": count,
             "locale": DEFAULT_LOCALE,
             "seed": 999,

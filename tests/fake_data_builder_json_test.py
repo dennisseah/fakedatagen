@@ -14,7 +14,7 @@ from tests.commons import write_metadata_file
 def _validate_result(result):
     assert (
         json.dumps(result)
-        == """{"first_name": "Kimberly", "last_name": "Miller", "address": "2513 Joseph Ports Apt. 463\\nJonestown, SD 66069", "date_of_birth": "1934-03-10", "email_address": "monicarivera@gmail.com", "phones": [{"type": "cell", "number": "+1-975-277-0031"}, {"type": "home", "number": "001-364-850-2716x9823"}], "employer": {"company": "Garcia Inc", "job": "Engineer, maintenance (IT)"}}"""  # noqa E502
+        == """{"first_name": "Kimberly", "last_name": "Miller", "address": "2513 Joseph Ports Apt. 463\\nJonestown, SD 66069", "email_address": "jacobleonard@gmail.com", "phones": [{"type": "cell", "number": "897-527-7003"}, {"type": "home", "number": "364-850-2716"}], "employer": {"company": "Tran, Jackson and Perez", "job": "Biochemist, clinical"}}"""  # noqa E502
     )
 
 

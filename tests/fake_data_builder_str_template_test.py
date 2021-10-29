@@ -12,7 +12,7 @@ from tests.commons import write_metadata_file
 def _validate_result(result):
     assert (
         result
-        == "I am Kimberly Miller. I live in 2513 Joseph Ports Apt. 463\nJonestown, SD 66069. I am born in 1934-03-10. My email address is monicarivera@gmail.com and phone number is +1-975-277-0031. I work as a Exercise physiologist in Pope-Hill. My employee id is JYkn-85027169"  # noqa E501
+        == "I am Kimberly Miller. I live in 2513 Joseph Ports Apt. 463\nJonestown, SD 66069. My email address is jacobleonard@gmail.com and phone number is 897-527-7003. I work as a Clinical research associate in Kirby, Hall and Pope. My employee id is NJYk-48502716"  # noqa E502
     )
 
 
