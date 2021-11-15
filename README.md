@@ -4,27 +4,15 @@
 
 https://faker.readthedocs.io/en/master/providers.html
 
+## Dependencies
+
+- Install pdm (instruction at https://pdm.fming.dev/)
+
 ## Setup Development Environment
 
-### Install Python Virtual Environment
-
-```python -m venv .venv```
-
-(use `python3` if you are on macOS)
-
-### Install Dependencies
-
-Open `vscode` from the root folder. `vscode` will detect `.venv` once
-we open a python source file. 
-
-Open a new terminal, and install dependencies.
-
-```sh
-pip install --upgrade pip
-pip install -r requirements-dev.txt
-```
-
-(use `pip3` if you are on macOS)
+1. edit `.pdm.toml` to reference your preferred _Python_ interpreter.
+1. edit `python.autoComplete.extraPaths` and `python.analysis.extraPaths` in `.vscode/settings.json` to have to correct _Python_ version (currently, it is `3.8`)
+1. ```pdm install```
 
 ## Test run
 
@@ -51,11 +39,12 @@ python samples/main_strtemplate.py
 ## Test unit tests
 
 ```sh
-pytest --cov=lib --cov-report term-missing tests/
+pytest --cov=fake_data_builder --cov-report term-missing tests/
 ```
 
 ## Package wheel
 
 ```sh
+python3 -m pip install --upgrade build
 python -m build
 ```

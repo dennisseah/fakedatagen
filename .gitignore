@@ -1,5 +1,6 @@
-.venv/**
+__pypackages__/**
 dist/**
 **/__pycache__
+**/*.pyc
 .coverage
 **/*.egg-info

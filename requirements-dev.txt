@@ -1,7 +1,0 @@
--r requirements.txt
-black==21.9b0
-build==0.7.0
-pytest-cov==3.0.0
-pytest==6.2.5
-setuptools==41.2.0
-wheel==0.37.0
