@@ -12,9 +12,8 @@ license = {text = "MIT"}
 
 [tool.pdm.dev-dependencies]  # This is dev dependencies
 dev1 = ["black==21.9b0"]
-dev2 = ["build==0.7.0"]
-dev3 = ["pytest-cov==3.0.0"]
-dev4 = ["pytest==6.2.5"]
+dev2 = ["pytest-cov==3.0.0"]
+dev3 = ["pytest==6.2.5"]
 
 [project.urls]
 homepage = "https://github.com/dennisseah/fakedatagen"
