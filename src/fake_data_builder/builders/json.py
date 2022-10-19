@@ -1,10 +1,14 @@
 """String template builder."""
+
 import copy
 import re
+import uuid
+
 from faker import Faker
 
 from fake_data_builder.configuration import DEFAULT_LOCALE, MetadataKey
 from fake_data_builder.errors import InvalidMetadataJson
+from faker_ex import FakerEx
 
 RE_TOKEN = re.compile(r"\{\{\s*(\S+?)\s*\}\}")
 
@@ -37,7 +41,11 @@ class Json:
         if isinstance(obj, str):
             while m := RE_TOKEN.search(obj):  # noqa E701 support walrus
                 span = m.span()
-                obj = obj[0 : span[0]] + str(eval(m.groups()[0])) + obj[span[1] :]
+                obj = (
+                    str(uuid.uuid4())
+                    if m.groups()[0] == "faker.uuid()"
+                    else obj[0 : span[0]] + str(eval(m.groups()[0])) + obj[span[1] :]
+                )
             return obj
 
         if isinstance(obj, list):
@@ -58,10 +66,7 @@ class Json:
         Returns:
             list: List of string
         """
-        if self.seed:
-            Faker.seed(self.seed)
-
-        faker = Faker(self.locale)
+        faker = FakerEx.get_faker(self.locale, self.seed)
 
         result = [self.__build(faker) for i in range(0, self.count)]
 

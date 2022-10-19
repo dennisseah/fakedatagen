@@ -1,9 +1,12 @@
 """String template builder."""
+
 import re
+
 from faker import Faker
 
 from fake_data_builder.configuration import DEFAULT_LOCALE, MetadataKey
 from fake_data_builder.errors import InvalidMetadataJson
+from faker_ex import FakerEx
 
 RE_TOKEN = re.compile(r"\{\{\s*(\S+?)\s*\}\}")
 
@@ -51,10 +54,7 @@ class StrTemplate:
         Returns:
             list: List of string
         """
-        if self.seed:
-            Faker.seed(self.seed)
-
-        faker = Faker(self.locale)
+        faker = FakerEx.get_faker(self.locale, self.seed)
 
         result = [self.__build(faker) for i in range(0, self.count)]
 

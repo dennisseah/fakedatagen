@@ -1,9 +1,11 @@
 """Pandas dataframe builder."""
+
 import pandas as pd
 from faker import Faker
 
-from fake_data_builder.errors import InvalidMetadataJson
 from fake_data_builder.configuration import DEFAULT_LOCALE, MetadataKey
+from fake_data_builder.errors import InvalidMetadataJson
+from faker_ex import FakerEx
 
 
 class Dataframe:
@@ -40,12 +42,11 @@ class Dataframe:
         if not locale:
             locale = DEFAULT_LOCALE
 
-        faker = Faker(locale)
-        Faker.seed(seed)
+        faker = FakerEx.get_faker(locale, seed)
 
         for _ in range(count):
-            df = df.append(
-                self.__build_row(faker, column_generator),
+            df = pd.concat(
+                [df, self.__build_row(faker, column_generator)],
                 ignore_index=True,
             )
 
@@ -68,6 +69,7 @@ class Dataframe:
 
     def __build_row(self, faker, column_generator: dict):
         data = {}
+
         for col in self.columns:
             try:
                 data[col["name"]] = self.__get_column_val(
@@ -77,7 +79,7 @@ class Dataframe:
                 )
             except AttributeError:
                 raise AttributeError(f"Unrecognized column func, {col['func']}.")
-        return data
+        return pd.DataFrame({k: [v] for k, v in data.items()})
 
     def build(self):
         """Build the dataframe.
