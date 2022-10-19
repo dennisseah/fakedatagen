@@ -42,9 +42,9 @@ class Json:
             while m := RE_TOKEN.search(obj):  # noqa E701 support walrus
                 span = m.span()
                 obj = (
-                    str(uuid.uuid4())
+                    f"{obj[0 : span[0]]}{str(uuid.uuid4())}{obj[span[1] :]}"
                     if m.groups()[0] == "faker.uuid()"
-                    else obj[0 : span[0]] + str(eval(m.groups()[0])) + obj[span[1] :]
+                    else f"{obj[0 : span[0]]}{str(eval(m.groups()[0]))}{obj[span[1] :]}"
                 )
             return obj
 

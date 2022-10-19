@@ -1,6 +1,7 @@
 {
     "type": "json",
     "schema": {
+        "id": "{{ faker.uuid() }}@schema",
         "first_name": "{{ faker.first_name() }}",
         "last_name": "{{ faker.last_name() }}",
         "address": "{{ faker.address() }}",
